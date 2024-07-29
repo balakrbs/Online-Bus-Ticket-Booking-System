@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Bus Route Available</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../busliststyle.css" />
+    <script
+      src="https://kit.fontawesome.com/6cb71b80aa.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <!-- navbar -->
+    <div class="container-fluid">
+      <header
+        class="d-flex flex-wrap justify-content-between align-items-center py-3 mb-4 border-bottom"
+      >
+        <a
+          href="/home"
+          class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+        >
+          <span class="fs-4 ms-3"
+            ><i class="fa-solid fa-bus" style="color: #ff0000"></i
+          ></span>
+          <span class="fs-4 ms-3">Online Bus Booking</span>
+        </a>
+        <ul class="nav nav-pills justify-content-center flex-grow-1">
+          <li class="nav-item">
+            <a href="/home" class="nav-link text-danger" aria-current="page"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="/buses/list" class="nav-link active bg-danger">Routes</a>
+          </li>
+          <li class="nav-item">
+            <a href="/buses/add" class="nav-link text-danger">Add Routes</a>
+          </li>
+          <li class="nav-item">
+            <a href="/bookings/view" class="nav-link text-danger">Booking</a>
+          </li>
+          <li class="nav-item">
+            <a href="/about" class="nav-link text-danger">About</a>
+          </li>
+        </ul>
+        <div class="profile d-flex align-items-center">
+          <div class="dropdown">
+            <a
+              href="#"
+              class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span class="ps-2 rounded text-danger"
+                ><i class="fa-solid fa-user"></i
+              ></span>
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+              <li><a class="dropdown-item" href="/profile">Profile</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <main class="container">
+        <a th:href="@{/buses/add}" class="btn btn-outline-danger mb-4">Add New Route</a>
+      <div th:if="${buses != null}" class="row">
+        <div th:each="bus : ${buses}" class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title" th:text="${bus.busname}">Bus Name</h4>
+              <div class="card-detail">
+                <span
+                  ><strong>Bus Number:</strong>
+                  <span  th:text="${bus.busnumber}">Bus Number</span></span
+                >
+                <span
+                  ><strong>Arrival:</strong>
+                  <span th:text="${bus.arrival}">Arrival</span></span
+                >
+                <span
+                  ><strong>Destination:</strong>
+                  <span th:text="${bus.destination}">Destination</span></span
+                >
+              </div>
+              <div class="card-detail">
+                <span
+                  ><strong>Arrival Time:</strong>
+                  <span th:text="${bus.arrivaltime}">Arrival Time</span></span
+                >
+                <span
+                  ><strong>Departure Time:</strong>
+                  <span th:text="${bus.departuretime}">Departure Time</span></span
+                >
+              </div>
+              <div class="card-detail">
+                <span><strong>Fare:</strong>
+                  <span th:text="${bus.fare}">Fare</span></span>                  
+              </div>
+            </div>
+            <div class="card-footer">
+              <button
+              class="book-button btn btn-outline-danger"
+              th:data-busnumber="${bus.busnumber}">Book</button>
+              <a
+                th:href="@{/buses/delete/{busnumber}(busnumber=${bus.busnumber})}"
+                class="btn btn-outline-danger ms-4"
+                >Delete</a>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </main>
+
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".book-button");
+        buttons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const busnumber = this.getAttribute("data-busnumber");
+            window.location.href = `/bookings/book?busnumber=${busnumber}`;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
